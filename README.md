@@ -565,7 +565,7 @@ or loop over them in one command (filtering out the `ok` summary line):
 
 ```bash
 for test in $(go test -list '^Fuzz' ./decompression | grep '^Fuzz'); do
-    go test -fuzz="^$test$" ./decompression
+    go test -fuzz="^$test$" -fuzztime=30s ./decompression
 done
 ```
 
@@ -596,7 +596,7 @@ These corpus entries become permanent test cases that are checked on every test 
 3. **Provide good seed values**: Good seeds help the fuzzer explore more effectively
 4. **Test error paths**: Make sure your code handles invalid input gracefully
 5. **Avoid flaky checks**: Don't rely on timing or randomness in assertions
-6. **Use constraints from inside the callback**: Call `t.Skip()` on invalid input combinations early. The argument to `f.Fuzz` is a regular test callback, so it receives `*testing.T` - use its methods. Calling an `*F` method there is an error: Go 1.25 and later refuse to build it, and earlier versions panic at run time with `testing: f.Skip was called inside the fuzz target, use t.Skip instead`.
+6. **Use constraints from inside the callback**: Call `t.Skip()` on invalid input combinations early. The argument to `f.Fuzz` is a regular test callback, so it receives `*testing.T` - use its methods. Calling an `*F` method there is an error: Go 1.24 and later refuse to build it.
 7. **Monitor performance**: Profiling can reveal performance issues the fuzzer discovers
 
 ## Conclusion
